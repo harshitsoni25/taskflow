@@ -2,9 +2,8 @@ services:
   - type: web
     name: projecthub-backend
     env: node
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: npm run start:prod
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm run start:prod
     autoDeploy: true
     envVars:
       - key: JWT_SECRET
@@ -14,4 +13,4 @@ services:
       - key: NODE_ENV
         value: production
       - key: FRONTEND_URLS
-        value: https://projecthub-frontend.vercel.app
+        value: https://projecthub-frontend-pink.vercel.app
