@@ -16,7 +16,7 @@ const daysFromNow = (n) => {
 };
 
 // ─── Demo data ───────────────────────────────────────────────────────────────
-const DEMO_EMAIL    = 'demo@taskflow.app';
+const DEMO_EMAIL    = 'demo@projecthub.app';
 const DEMO_PASSWORD = 'demo123';
 
 async function seed() {
@@ -68,7 +68,7 @@ async function seed() {
 
   // ── 2. Users ──────────────────────────────────────────────────────────────
   const users = [
-    { id: uuidv4(), name: 'TaskFlow Demo',  email: 'demo@taskflow.app',   password: DEMO_PASSWORD },
+    { id: uuidv4(), name: 'ProjectHub Demo', email: 'demo@projecthub.app', password: DEMO_PASSWORD },
     { id: uuidv4(), name: 'Alice Johnson',  email: 'alice@taskflow.app',  password: 'alice123'    },
     { id: uuidv4(), name: 'Bob Martinez',   email: 'bob@taskflow.app',    password: 'bob123'      },
     { id: uuidv4(), name: 'Carol Williams', email: 'carol@taskflow.app',  password: 'carol123'    },
@@ -91,7 +91,7 @@ async function seed() {
     }
   }
 
-  const demoId  = userMap['demo@taskflow.app'];
+  const demoId  = userMap['demo@projecthub.app'];
   const aliceId = userMap['alice@taskflow.app'];
   const bobId   = userMap['bob@taskflow.app'];
   const carolId = userMap['carol@taskflow.app'];

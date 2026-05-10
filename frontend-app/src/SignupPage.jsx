@@ -25,8 +25,8 @@ export default function SignupPage({ onNavigate }) {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo">
-          <div className="logo-icon">⚡</div>
-          <div className="logo-text">Task<span>Flow</span></div>
+          <div className="logo-icon">🚀</div>
+          <div className="logo-text">Project<span>Hub</span></div>
         </div>
         <h1 className="auth-title">Create account</h1>
         <p className="auth-subtitle">Start managing your team tasks</p>

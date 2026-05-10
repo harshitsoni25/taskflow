@@ -8,7 +8,7 @@ export default function Sidebar({ view, setView, projects, onNewProject }) {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <div className="logo-icon" style={{width:24,height:24,fontSize:14,background:'var(--accent)',borderRadius:4}}>✨</div>
+        <div className="logo-icon" style={{width:24,height:24,fontSize:14,background:'var(--accent)',borderRadius:4}}>🚀</div>
         <div className="logo-text" style={{fontSize:16}}>Project<span style={{color:'var(--accent)'}}>Hub</span></div>
       </div>
 

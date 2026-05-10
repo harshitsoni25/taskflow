@@ -7,9 +7,9 @@ const db = createClient({
   url: process.env.DATABASE_URL || `file:${path.join(__dirname, 'taskflow.db')}`,
 });
 
-const DEMO_EMAIL = 'demo@taskflow.app';
+const DEMO_EMAIL = 'demo@projecthub.app';
 const DEMO_PASSWORD = 'demo123';
-const DEMO_NAME = 'TaskFlow Demo';
+const DEMO_NAME = 'ProjectHub Demo';
 
 async function ensureDemoUser() {
   const normalizedEmail = DEMO_EMAIL.toLowerCase().trim();

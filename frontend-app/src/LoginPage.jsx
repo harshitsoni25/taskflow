@@ -41,8 +41,8 @@ export default function LoginPage({ onNavigate }) {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo">
-          <div className="logo-icon">⚡</div>
-          <div className="logo-text">Task<span>Flow</span></div>
+          <div className="logo-icon">🚀</div>
+          <div className="logo-text">Project<span>Hub</span></div>
         </div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to your workspace</p>
@@ -73,7 +73,7 @@ export default function LoginPage({ onNavigate }) {
           No account? <a href="#" onClick={e => { e.preventDefault(); onNavigate('signup'); }}>Create one</a>
         </div>
         <div className="auth-link" style={{marginTop: 12, fontSize: 12, color: 'var(--text3)'}}>
-          Demo: demo@taskflow.app / demo123
+          Demo: demo@projecthub.app / demo123
         </div>
       </div>
     </div>
