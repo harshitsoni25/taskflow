@@ -86,12 +86,12 @@ export default function MyTasksPage({ setView }) {
           <div className="card" style={{padding:0,overflow:'hidden'}}>
             <table>
               <thead>
-                <tr>
-                  <th>Task</th>
-                  <th>Project</th>
-                  <th>Priority</th>
-                  <th>Due Date</th>
-                  <th>Status</th>
+                  <th style={{width: 30}}></th>
+                  <th>TASK</th>
+                  <th>PROJECT</th>
+                  <th>PRIORITY</th>
+                  <th>DUE DATE</th>
+                  <th>STATUS</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,13 +99,17 @@ export default function MyTasksPage({ setView }) {
                   const isOverdue = t.due_date && new Date(t.due_date) < new Date() && t.status !== 'done';
                   return (
                     <tr key={t.id}>
+                      <td><input type="checkbox" /></td>
                       <td>
-                        <div style={{fontWeight:500,color:'var(--text)',marginBottom:2}}>{t.title}</div>
+                        <div style={{fontWeight:500,color:'var(--text)',marginBottom:2}}>
+                          <span style={{color:'var(--text3)', marginRight: 8}}>📄</span>
+                          {t.title}
+                        </div>
                         {t.description && <div style={{fontSize:12,color:'var(--text3)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:240}}>{t.description}</div>}
                       </td>
                       <td>
                         <span onClick={() => setView(`project-${t.project_id}`)}
-                          style={{cursor:'pointer',color:'var(--accent)',fontWeight:500}}>
+                          style={{cursor:'pointer',color:'var(--text2)',fontWeight:500}}>
                           {t.project_name}
                         </span>
                       </td>
@@ -116,10 +120,13 @@ export default function MyTasksPage({ setView }) {
                       </td>
                       <td>
                         <select value={t.status} onChange={e => updateStatus(t, e.target.value)}
-                          style={{background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:6,padding:'5px 10px',color:'var(--text)',fontSize:12,fontWeight:600,cursor:'pointer'}}>
-                          <option value="todo">To Do</option>
+                          style={{
+                            background: t.status==='done'?'#E8F5E9':t.status==='in_progress'?'#E3F2FD':'#FFEBEE',
+                            color: t.status==='done'?'#2E7D32':t.status==='in_progress'?'#1565C0':'#C62828',
+                            border:'none',borderRadius:20,padding:'5px 12px',fontSize:11,fontWeight:600,cursor:'pointer'}}>
+                          <option value="todo">Open</option>
                           <option value="in_progress">In Progress</option>
-                          <option value="done">Done</option>
+                          <option value="done">Closed</option>
                         </select>
                       </td>
                     </tr>

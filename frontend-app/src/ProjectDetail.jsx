@@ -19,7 +19,7 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
   const [members, setMembers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState('board');
+  const [tab, setTab] = useState('list');
   const [selectedTask, setSelectedTask] = useState(null);
   const [showNewTask, setShowNewTask] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
@@ -212,15 +212,26 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
         </div>
 
         {/* Tabs */}
-        <div style={{display:'flex',gap:4,marginBottom:20,borderBottom:'1px solid var(--border)',paddingBottom:1}}>
-          {['board','list','members'].map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              style={{padding:'8px 16px',border:'none',background:'none',cursor:'pointer',fontSize:13,fontWeight:500,
-                color: tab===t ? 'var(--accent)' : 'var(--text2)',
-                borderBottom: tab===t ? '2px solid var(--accent)' : '2px solid transparent',
-                textTransform:'capitalize',transition:'all 0.2s'
-              }}>{t === 'board' ? '📋 Board' : t === 'list' ? '📄 List' : '👥 Members'}</button>
-          ))}
+        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, paddingBottom:10, borderBottom:'1px solid var(--border)'}}>
+          <div style={{display:'flex',gap:16, alignItems:'center'}}>
+            <span style={{fontSize:14, fontWeight:600, color:'var(--accent)'}}>All Tasks ▾</span>
+            <span style={{color:'var(--text3)'}}>☆ ⟳</span>
+          </div>
+          <div style={{display:'flex',gap:16, alignItems:'center'}}>
+            <div style={{display:'flex',gap:4, background:'var(--bg3)', borderRadius: 20, padding: 2}}>
+              {['board','list','members'].map(t => (
+                <button key={t} onClick={() => setTab(t)}
+                  style={{padding:'4px 12px',border:'none',borderRadius: 20, cursor:'pointer',fontSize:12,fontWeight:600,
+                    background: tab===t ? 'var(--bg)' : 'transparent',
+                    color: tab===t ? 'var(--accent)' : 'var(--text2)',
+                    boxShadow: tab===t ? '0 1px 2px rgba(0,0,0,0.1)' : 'none',
+                    textTransform:'capitalize',transition:'all 0.2s'
+                  }}>{t}</button>
+              ))}
+            </div>
+            <button className="btn" style={{background:'var(--accent)', color:'white', borderRadius:20, padding:'6px 16px'}} onClick={() => setShowNewTask(true)}>Add Task ▾</button>
+            <span style={{color:'var(--text3)'}}>⏳ ⋯</span>
+          </div>
         </div>
 
         {/* Filter bar */}
@@ -299,11 +310,13 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
               <table>
                 <thead>
                   <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                    <th>Assignee</th>
-                    <th>Due Date</th>
+                    <th style={{width: 30}}></th>
+                    <th>TASK</th>
+                    <th>OWNER</th>
+                    <th>STATUS</th>
+                    <th>DUE DATE</th>
+                    <th>% COMPLETE</th>
+                    <th>PRIORITY</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -311,26 +324,32 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
                     const isOverdue = t.due_date && new Date(t.due_date) < new Date() && t.status !== 'done';
                     return (
                       <tr key={t.id} style={{cursor:'pointer'}} onClick={() => setSelectedTask(t)}>
-                        <td style={{color:'var(--text)',fontWeight:500}}>{t.title}</td>
-                        <td>
-                          <span style={{fontSize:11,fontWeight:600,padding:'2px 8px',borderRadius:100,
-                            background: t.status==='done'?'rgba(34,197,94,0.15)':t.status==='in_progress'?'rgba(245,158,11,0.15)':'rgba(90,90,122,0.15)',
-                            color: t.status==='done'?'var(--green)':t.status==='in_progress'?'var(--yellow)':'var(--text3)'
-                          }}>{t.status==='in_progress'?'In Progress':t.status==='done'?'Done':'To Do'}</span>
+                        <td><input type="checkbox" onClick={e => e.stopPropagation()} /></td>
+                        <td style={{color:'var(--text)',fontWeight:500}}>
+                          <span style={{color:'var(--text3)', marginRight: 8}}>📄</span>
+                          {t.title}
                         </td>
-                        <td><span className={`priority-badge ${PRIORITY_CLASSES[t.priority]}`}>{t.priority}</span></td>
                         <td>
-                          {t.assignee_name ? (
-                            <div style={{display:'flex',alignItems:'center',gap:6}}>
-                              <div className="avatar" style={{width:22,height:22,fontSize:9}}>{initials(t.assignee_name)}</div>
-                              {t.assignee_name}
-                            </div>
-                          ) : <span style={{color:'var(--text3)'}}>—</span>}
+                          {t.assignee_name ? t.assignee_name : <span style={{color:'var(--text3)'}}>Unassigned</span>}
+                        </td>
+                        <td>
+                          <span style={{fontSize:11,fontWeight:600,padding:'4px 10px',borderRadius:20,
+                            background: t.status==='done'?'#E8F5E9':t.status==='in_progress'?'#E3F2FD':'#FFEBEE',
+                            color: t.status==='done'?'#2E7D32':t.status==='in_progress'?'#1565C0':'#C62828'
+                          }}>{t.status==='in_progress'?'In Progress':t.status==='done'?'Closed':'Open'}</span>
                         </td>
                         <td style={{color: isOverdue ? 'var(--red)' : 'var(--text2)'}}>
                           {t.due_date ? formatDate(t.due_date) : '—'}
-                          {isOverdue && ' ⚠'}
                         </td>
+                        <td>
+                          <div style={{display:'flex', alignItems:'center', gap: 8}}>
+                            <div className="progress-bar" style={{flex: 1, height: 6, margin: 0, background: '#E0E0E0'}}>
+                              <div className="progress-fill" style={{width: t.status==='done'?'100%':t.status==='in_progress'?'50%':'0%', background: '#4CAF50'}}/>
+                            </div>
+                            <span style={{fontSize: 11}}>{t.status==='done'?'100%':t.status==='in_progress'?'50%':'0%'}</span>
+                          </div>
+                        </td>
+                        <td><span className={`priority-badge ${PRIORITY_CLASSES[t.priority]}`}>{t.priority}</span></td>
                       </tr>
                     );
                   })}

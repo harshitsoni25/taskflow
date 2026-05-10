@@ -58,8 +58,30 @@ function AppContent() {
   return (
     <div className="app-layout">
       <Sidebar view={view} setView={setView} projects={projects} onNewProject={() => setView('projects')}/>
-      <div className="main-content">
-        {renderMain()}
+      <div className="main-content" style={{display:'flex', flexDirection:'column'}}>
+        <div style={{height: 60, borderBottom: '1px solid var(--border)', display:'flex', alignItems:'center', padding: '0 32px', background: 'var(--bg)'}}>
+          <div style={{display:'flex', gap: 24, fontSize: 13, fontWeight: 500, color: 'var(--text2)', flex: 1}}>
+            <span style={{cursor:'pointer', color: view==='dashboard'?'var(--accent)':'inherit', borderBottom: view==='dashboard'?'2px solid var(--accent)':'none', padding: '20px 0'}} onClick={() => setView('dashboard')}>Dashboard</span>
+            <span style={{cursor:'pointer', color: view==='my-tasks'?'var(--accent)':'inherit', borderBottom: view==='my-tasks'?'2px solid var(--accent)':'none', padding: '20px 0'}} onClick={() => setView('my-tasks')}>Tasks</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Issues</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Milestones</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Documents</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Finance</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Forums</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Users</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Gantt & Reports</span>
+            <span style={{cursor:'pointer', padding: '20px 0'}}>Timesheets</span>
+          </div>
+          <div style={{display:'flex', alignItems:'center', gap: 16}}>
+            <button style={{background:'none',border:'none',cursor:'pointer',fontSize:18}}>🔍</button>
+            <button style={{background:'none',border:'none',cursor:'pointer',fontSize:18}}>⏱️</button>
+            <button style={{background:'none',border:'none',cursor:'pointer',fontSize:18}}>🔔</button>
+            <button style={{background:'none',border:'none',cursor:'pointer',fontSize:18}}>+</button>
+          </div>
+        </div>
+        <div style={{flex: 1, overflowY: 'auto'}}>
+          {renderMain()}
+        </div>
       </div>
     </div>
   );

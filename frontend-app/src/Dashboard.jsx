@@ -168,11 +168,11 @@ export default function Dashboard({ setView }) {
               <table>
                 <thead>
                   <tr>
-                    <th>Project</th>
-                    <th>Total Tasks</th>
-                    <th>Done</th>
-                    <th>Members</th>
-                    <th>Progress</th>
+                    <th>PROJECT</th>
+                    <th>TOTAL TASKS</th>
+                    <th>DONE</th>
+                    <th>MEMBERS</th>
+                    <th>PROGRESS</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -8,51 +8,63 @@ export default function Sidebar({ view, setView, projects, onNewProject }) {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <div className="logo-icon" style={{width:32,height:32,fontSize:16}}>⚡</div>
-        <div className="logo-text" style={{fontSize:18}}>Task<span>Flow</span></div>
+        <div className="logo-icon" style={{width:24,height:24,fontSize:14,background:'var(--accent)',borderRadius:4}}>✨</div>
+        <div className="logo-text" style={{fontSize:16}}>Projects</div>
       </div>
 
-      <div className="nav-section">
-        <div className="nav-label">Main</div>
+      <div className="nav-section" style={{paddingTop: 8, paddingBottom: 0}}>
         <button className={`nav-item ${view === 'dashboard' ? 'active' : ''}`} onClick={() => setView('dashboard')}>
-          <span>📊</span> Dashboard
+          <span style={{width: 20, textAlign:'center'}}>🏠</span> Home
         </button>
-        <button className={`nav-item ${view === 'projects' ? 'active' : ''}`} onClick={() => setView('projects')}>
-          <span>📁</span> Projects
+        <button className={`nav-item`}>
+          <span style={{width: 20, textAlign:'center'}}>📰</span> Feed
         </button>
-        <button className={`nav-item ${view === 'my-tasks' ? 'active' : ''}`} onClick={() => setView('my-tasks')}>
-          <span>✅</span> My Tasks
+        <button className={`nav-item`}>
+          <span style={{width: 20, textAlign:'center'}}>💬</span> Discuss
+        </button>
+        <button className={`nav-item`}>
+          <span style={{width: 20, textAlign:'center'}}>📈</span> Reports
+        </button>
+        <button className={`nav-item`}>
+          <span style={{width: 20, textAlign:'center'}}>📅</span> Calendar
+        </button>
+        <button className={`nav-item ${view === 'projects' || view.startsWith('project-') ? 'active' : ''}`} onClick={() => setView('projects')}>
+          <span style={{width: 20, textAlign:'center'}}>📁</span> Projects
         </button>
       </div>
 
-      {projects.length > 0 && (
-        <div className="nav-section" style={{flex:1}}>
-          <div className="nav-label" style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <span>Projects</span>
-            <button onClick={onNewProject} style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:16,lineHeight:1}}>+</button>
-          </div>
-          {projects.slice(0,8).map(p => (
-            <button key={p.id}
-              className={`nav-item ${view === `project-${p.id}` ? 'active' : ''}`}
-              onClick={() => setView(`project-${p.id}`)}
-              style={{fontSize:13}}
-            >
-              <span style={{width:6,height:6,borderRadius:'50%',background:'var(--accent)',flexShrink:0,display:'inline-block'}}></span>
-              <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.name}</span>
-            </button>
-          ))}
+      <div className="nav-section" style={{flex:1, paddingTop: 16}}>
+        <div className="nav-label">WORK OVERVIEW</div>
+        <button className={`nav-item ${view === 'my-tasks' ? 'active' : ''}`} onClick={() => setView('my-tasks')} style={{paddingLeft: 32}}>Tasks</button>
+        <button className={`nav-item`} style={{paddingLeft: 32}}>Issues</button>
+        <button className={`nav-item`} style={{paddingLeft: 32}}>Milestones</button>
+        <button className={`nav-item`} style={{paddingLeft: 32}}>Timesheets</button>
+        <button className={`nav-item`} style={{paddingLeft: 32}}>Expenses</button>
+
+        <div className="nav-label" style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:24}}>
+          <span>RECENT PROJECTS</span>
+          <button onClick={onNewProject} style={{background:'none',border:'none',color:'var(--sidebar-text)',cursor:'pointer',fontSize:16,lineHeight:1}}>+</button>
         </div>
-      )}
+        {projects.slice(0,8).map(p => (
+          <button key={p.id}
+            className={`nav-item ${view === `project-${p.id}` ? 'active' : ''}`}
+            onClick={() => setView(`project-${p.id}`)}
+            style={{fontSize:13, paddingLeft: 16}}
+          >
+            <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.name}</span>
+          </button>
+        ))}
+      </div>
 
       <div className="sidebar-footer">
         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
           <div className="avatar"><span>{initials(user?.name)}</span></div>
           <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:13,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.name}</div>
-            <div style={{fontSize:11,color:'var(--text3)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.email}</div>
+            <div style={{fontSize:13,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'#fff'}}>{user?.name}</div>
+            <div style={{fontSize:11,color:'var(--sidebar-text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.email}</div>
           </div>
         </div>
-        <button className="btn btn-ghost btn-sm" style={{width:'100%'}} onClick={logout}>Sign out</button>
+        <button className="btn btn-ghost btn-sm" style={{width:'100%',color:'var(--sidebar-text)'}} onClick={logout}>Sign out</button>
       </div>
     </div>
   );
