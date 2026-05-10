@@ -52,16 +52,14 @@ router.get('/', authenticate, async (req, res) => {
       args: [userId],
     });
 
-    // Project summary
+    // Project summary — use subqueries to avoid multiplication from double-joining project_members
     const projects = await db.execute({
       sql: `SELECT p.id, p.name,
-              COUNT(DISTINCT t.id) as total_tasks,
-              SUM(CASE WHEN t.status = 'done' THEN 1 ELSE 0 END) as done_tasks,
-              COUNT(DISTINCT pm2.user_id) as member_count
+              (SELECT COUNT(*) FROM tasks t WHERE t.project_id = p.id) as total_tasks,
+              (SELECT COUNT(*) FROM tasks t WHERE t.project_id = p.id AND t.status = 'done') as done_tasks,
+              (SELECT COUNT(*) FROM project_members pm2 WHERE pm2.project_id = p.id) as member_count
             FROM projects p
             JOIN project_members pm ON pm.project_id = p.id AND pm.user_id = ?
-            LEFT JOIN tasks t ON t.project_id = p.id
-            LEFT JOIN project_members pm2 ON pm2.project_id = p.id
             GROUP BY p.id, p.name
             ORDER BY p.created_at DESC`,
       args: [userId],

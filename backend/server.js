@@ -13,25 +13,16 @@ const PORT = process.env.PORT || 3001;
 
 const configuredOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || '')
   .split(',')
-  .map((origin) => origin.trim())
+  .map((o) => o.trim())
   .filter(Boolean);
 
-const defaultDevOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'http://localhost:5174',
-  'http://127.0.0.1:5174',
-];
-
-const allowedOrigins = new Set(["https://task-flows-production.up.railway.app"]);
+const allowedOrigins = new Set(configuredOrigins);
 
 const corsOptions = {
   origin(origin, callback) {
-    // Allow non-browser or same-origin requests without Origin header.
     if (!origin) return callback(null, true);
-    const isLocalDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
-    if (isLocalDevOrigin) return callback(null, true);
-    if (allowedOrigins.has(origin)) return callback(null, true);
+    const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+    if (isLocal || allowedOrigins.has(origin)) return callback(null, true);
     return callback(new Error(`Not allowed by CORS: ${origin}`));
   },
   credentials: true,

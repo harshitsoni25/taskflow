@@ -86,6 +86,7 @@ export default function MyTasksPage({ setView }) {
           <div className="card" style={{padding:0,overflow:'hidden'}}>
             <table>
               <thead>
+                <tr>
                   <th style={{width: 30}}></th>
                   <th>TASK</th>
                   <th>PROJECT</th>
