@@ -10,7 +10,8 @@ Manage projects, assign tasks, track progress, collaborate via discussions, hand
 
 | | Link |
 |---|---|
-| **🚀 Live App** | [**projecthub-live.up.railway.app**](https://projecthub-live.up.railway.app) *(coming soon — deploying to Railway)* |
+| **🚀 Live App** | [**projecthub-frontend-pink.vercel.app**](https://projecthub-frontend-pink.vercel.app) |
+| **⚙️ Backend API** | [**projecthub-l2c8.onrender.com/api/health**](https://projecthub-l2c8.onrender.com/api/health) |
 | **📦 Source Code** | [github.com/harshitsoni25/taskflow](https://github.com/harshitsoni25/taskflow) |
 
 **Demo credentials:**
