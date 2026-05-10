@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: projecthub-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node seed.js && node server.js
+    autoDeploy: true
+    envVars:
+      - key: JWT_SECRET
+        value: projecthub-prod-secret-2024
+      - key: DATABASE_URL
+        value: file:./taskflow.db
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URLS
+        value: https://projecthub-frontend.vercel.app

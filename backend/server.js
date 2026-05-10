@@ -56,7 +56,20 @@ app.use((err, req, res, next) => {
 async function start() {
   await initDB();
   app.listen(PORT, () => {
-    console.log(`TaskFlow API running on port ${PORT}`);
+    console.log(`ProjectHub API running on port ${PORT}`);
+
+    // ── Keep-alive self-ping for Render free tier ──────────────────────────
+    // Render free web services sleep after 15 min inactivity.
+    // Pinging /api/health every 14 min keeps the server awake 24/7 for free.
+    if (process.env.RENDER_EXTERNAL_URL) {
+      const pingUrl = `${process.env.RENDER_EXTERNAL_URL}/api/health`;
+      setInterval(() => {
+        fetch(pingUrl)
+          .then(() => console.log(`[keep-alive] pinged ${pingUrl}`))
+          .catch(err => console.warn(`[keep-alive] ping failed: ${err.message}`));
+      }, 14 * 60 * 1000); // every 14 minutes
+      console.log(`[keep-alive] Self-ping enabled → ${pingUrl}`);
+    }
   });
 }
 
