@@ -1,254 +1,213 @@
-# ⚡ TaskFlow — Team Task Manager
+# 🚀 ProjectHub — Team Project Management Suite
 
-A full-stack collaborative task management application built with **React + Node.js/Express + LibSQL (SQLite)**.
+> A full-stack, production-ready project management platform built with **React + Node.js/Express + SQLite (LibSQL)**.
 
-Manage projects, assign tasks, track progress, and collaborate with your team — with role-based access control.
-
----
-
-## Live Demo
-
-| Service | URL |
-|---------|-----|
-| Live Application Url | https://task-flows-production.up.railway.app/ |
-
+Manage projects, assign tasks, track progress, collaborate via discussions, handle finances, manage documents, and more — all in one place.
 
 ---
 
-## Features
+## 🌐 Live Demo
 
-- **JWT Authentication** — Signup/Login with secure token-based auth
-- **Project Management** — Create projects, add/remove members
-- **Kanban Board** — Drag-free visual board with To Do / In Progress / Done columns
-- **Task Management** — Title, description, due date, priority (High/Medium/Low), assignee
-- **Role-Based Access Control** — Admin vs Member permissions enforced on both frontend and backend
-- **Dashboard** — Task stats, status breakdown, overdue tasks, tasks per user, project overview
-- **My Tasks** — Personal task view with inline status updates
-- **Overdue Detection** — Visual warnings for tasks past their due date
-- **Responsive** — Works on desktop and mobile
+| | Link |
+|---|---|
+| **🚀 Live App** | [**projecthub-live.up.railway.app**](https://projecthub-live.up.railway.app) *(coming soon — deploying to Railway)* |
+| **📦 Source Code** | [github.com/harshitsoni25/taskflow](https://github.com/harshitsoni25/taskflow) |
+
+**Demo credentials:**
+```
+Email:    demo@projecthub.app
+Password: demo123
+```
 
 ---
 
-## Tech Stack
+## ✨ Features
+
+### Core
+- 🔐 **JWT Authentication** — Signup / Login with secure token-based auth
+- 📁 **Project Management** — Create projects, add/remove members with role-based access
+- ✅ **Task Management** — Title, description, due date, priority (High/Medium/Low), assignee
+- 📊 **Dashboard** — Live KPI cards, status breakdown, overdue alerts, tasks-per-member chart
+- 🗂️ **Kanban Board** — Visual To Do / In Progress / Done columns per project
+
+### Pages
+| Page | Description |
+|---|---|
+| 📅 **Calendar** | Monthly view of all tasks by due date across all projects. Click any task to jump to its project. |
+| 💬 **Discuss** | Slack-style threaded chat per project with persistent messages |
+| 📄 **Documents** | Two-panel markdown doc manager — create, edit, view docs per project |
+| 💰 **Expenses** | Budget tracker with KPI cards, per-project utilisation bars, expense ledger |
+| 📈 **Finance** | Monthly budget vs actuals bar chart, variance tracking, ROI analysis |
+| 🗣️ **Forums** | Community discussion board with tag filtering and reply threading |
+| 📊 **Gantt & Reports** | Horizontal scrollable timeline — tasks as bars by due date, group by Project/Status/Priority |
+| 🔖 **Milestones** | Track project milestones and completion progress |
+| 🐛 **Issues** | Bug tracker with status, priority, and project filtering |
+| ⏱️ **Timesheets** | Log and review time entries per project/task |
+| 👥 **Users** | Team directory with role indicators |
+
+### UI / UX
+- 🔍 **Global Search** — Search tasks and projects from the navbar
+- 🔔 **Notifications** — Live alerts for overdue and active tasks
+- ➕ **Quick Create** — One-click creation from anywhere in the navbar
+- 🌙 **Dark theme** — Enterprise-grade dark design system
+- 📱 **Responsive** — Works on desktop, tablet, and mobile
+
+---
+
+## 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| Frontend | React 18, Vite, Axios |
-| Backend | Node.js, Express 4 |
-| Database | LibSQL (SQLite-compatible, Railway-safe) |
-| Auth | JWT (jsonwebtoken + bcryptjs) |
-| Deployment | Railway |
+|---|---|
+| **Frontend** | React 18, Vite, Axios, Recharts |
+| **Backend** | Node.js 18, Express 5 |
+| **Database** | LibSQL (SQLite-compatible, Railway-ready) |
+| **Auth** | JWT (`jsonwebtoken` + `bcryptjs`) |
+| **Deployment** | Railway (backend + frontend as separate services) |
+| **Styling** | Vanilla CSS with custom design tokens (no Tailwind) |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-taskflow/
+projecthub/
 ├── backend/
 │   ├── server.js          # Express app entrypoint
-│   ├── db.js              # Database connection & schema
+│   ├── db.js              # Database connection & schema init
+│   ├── seed.js            # Demo data seeder (idempotent)
+│   ├── taskflow.db        # SQLite database file
 │   ├── middleware/
 │   │   └── auth.js        # JWT auth + role middleware
 │   ├── routes/
-│   │   ├── auth.js        # /api/auth/* endpoints
-│   │   ├── projects.js    # /api/projects/* endpoints
-│   │   ├── tasks.js       # /api/projects/:id/tasks/* endpoints
-│   │   └── dashboard.js   # /api/dashboard endpoint
+│   │   ├── auth.js        # /api/auth/*
+│   │   ├── projects.js    # /api/projects/*
+│   │   ├── tasks.js       # /api/projects/:id/tasks/*
+│   │   └── dashboard.js   # /api/dashboard
 │   ├── railway.toml
 │   └── package.json
 │
 └── frontend-app/
     ├── src/
-    │   ├── App.jsx         # Root component + routing
-    │   ├── AuthContext.jsx # Auth state management
-    │   ├── api.js          # Axios client with interceptors
-    │   ├── index.css       # Full design system
-    │   ├── LoginPage.jsx
-    │   ├── SignupPage.jsx
+    │   ├── App.jsx              # Root component + state-based routing
+    │   ├── AuthContext.jsx      # Auth state management
+    │   ├── api.js               # Axios client with JWT interceptors
+    │   ├── index.css            # Full design system (CSS variables)
     │   ├── Sidebar.jsx
     │   ├── Dashboard.jsx
     │   ├── ProjectsPage.jsx
-    │   ├── ProjectDetail.jsx  # Kanban + List + Members
-    │   ├── MyTasksPage.jsx
-    │   └── TaskModal.jsx
+    │   ├── ProjectDetail.jsx    # Kanban + List view + Members
+    │   ├── CalendarPage.jsx
+    │   ├── DiscussPage.jsx
+    │   ├── DocumentsPage.jsx
+    │   ├── ExpensesPage.jsx
+    │   ├── FinancePage.jsx
+    │   ├── ForumsPage.jsx
+    │   ├── GanttPage.jsx
+    │   ├── IssuesPage.jsx
+    │   ├── MilestonesPage.jsx
+    │   ├── TimesheetsPage.jsx
+    │   └── UsersPage.jsx
     ├── railway.toml
     └── package.json
 ```
 
 ---
 
-## API Endpoints
-
-### Auth
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/signup` | None | Register new user |
-| POST | `/api/auth/login` | None | Login, returns JWT |
-| GET | `/api/auth/me` | JWT | Get current user |
-
-### Projects
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/projects` | JWT | List user's projects |
-| POST | `/api/projects` | JWT | Create project (creator = Admin) |
-| GET | `/api/projects/:id` | Member | Project details + members |
-| DELETE | `/api/projects/:id` | Admin | Delete project |
-| POST | `/api/projects/:id/members` | Admin | Add member by email |
-| DELETE | `/api/projects/:id/members/:uid` | Admin | Remove member |
-
-### Tasks
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/projects/:id/tasks` | Member | List tasks (filterable) |
-| POST | `/api/projects/:id/tasks` | Admin | Create task |
-| PATCH | `/api/projects/:id/tasks/:tid` | Admin/Assignee | Update task |
-| DELETE | `/api/projects/:id/tasks/:tid` | Admin | Delete task |
-
-### Dashboard
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/dashboard` | JWT | Full stats for current user |
-
----
-
-## Role-Based Access Control
-
-| Action | Admin | Member |
-|--------|-------|--------|
-| Create/delete project | ✅ | ❌ |
-| Add/remove members | ✅ | ❌ |
-| Create/delete tasks | ✅ | ❌ |
-| Edit task (all fields) | ✅ | ❌ |
-| Update assigned task status | ✅ | ✅ |
-| View project + tasks | ✅ | ✅ |
-
----
-
-## Local Development Setup
+## ⚙️ Local Development
 
 ### Prerequisites
 - Node.js 18+
 - npm 9+
 
 ### 1. Clone the repo
-
 ```bash
-git clone https://github.com/your-username/taskflow.git
+git clone https://github.com/harshitsoni25/taskflow.git
 cd taskflow
 ```
 
-### 2. Setup Backend
-
+### 2. Start the Backend
 ```bash
 cd backend
-cp .env.example .env
-# Edit .env — set a strong JWT_SECRET
+cp .env.example .env        # set JWT_SECRET in .env
 npm install
-npm start
-# API running at http://localhost:3001
+node seed.js                # seed demo data
+npm start                   # → http://localhost:3001
 ```
 
-### 3. Setup Frontend
-
+### 3. Start the Frontend
 ```bash
 cd frontend-app
-cp .env.example .env
-# .env already points to http://localhost:3001/api for local dev
 npm install
-npm run dev
-# Frontend running at http://localhost:5173
+npm run dev                 # → http://localhost:5174
 ```
 
----
-
-## Deployment on Railway
-
-### Backend
-
-1. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub Repo
-2. Select the `backend/` folder (or set Root Directory to `/backend`)
-3. Set environment variables:
-   ```
-   JWT_SECRET=your-long-random-secret-here
-   FRONTEND_URL=https://your-frontend.railway.app
-   PORT=3001
-   ```
-4. Railway auto-detects Node.js and runs `npm start`
-
-### Frontend
-
-1. New Service → GitHub → select `frontend-app/` folder
-2. Set environment variables:
-   ```
-   VITE_API_URL=https://your-backend.railway.app/api
-   ```
-3. Build command: `npm run build`
-4. Start command: `npx serve dist -p $PORT`
-
-### Database
-
-The app uses **LibSQL** with a local file database (`taskflow.db`). For Railway persistence:
-- The DB file is created automatically on first run
-- For production durability, consider upgrading to **Turso** (hosted LibSQL) and setting `DATABASE_URL` to the Turso connection string
+Login with `demo@projecthub.app` / `demo123`
 
 ---
 
-## Database Schema
+## 🚀 Deploy to Railway
+
+### Backend Service
+1. New Project → Deploy from GitHub → `harshitsoni25/taskflow`
+2. Set **Root Directory** = `backend`
+3. Add environment variables:
+   ```
+   JWT_SECRET=your-strong-secret-here
+   DATABASE_URL=file:./taskflow.db
+   NODE_ENV=production
+   FRONTEND_URLS=https://your-frontend.up.railway.app
+   ```
+4. Settings → Networking → Generate Domain
+
+### Frontend Service
+1. Same project → New Service → GitHub → `harshitsoni25/taskflow`
+2. Set **Root Directory** = `frontend-app`
+3. Add environment variable:
+   ```
+   VITE_API_URL=https://your-backend.up.railway.app/api
+   ```
+4. Settings → Networking → Generate Domain
+
+---
+
+## 🗄️ Database Schema
 
 ```sql
-users (id, name, email, password, created_at)
+users          (id, name, email, password, created_at)
+projects       (id, name, description, admin_id, created_at)
+project_members(project_id, user_id, role, joined_at)
+tasks          (id, project_id, title, description, due_date,
+                priority, status, assignee_id, created_by,
+                created_at, updated_at)
 
-projects (id, name, description, admin_id, created_at)
-
-project_members (project_id, user_id, role, joined_at)
--- role: 'admin' | 'member'
-
-tasks (id, project_id, title, description, due_date, priority,
-       status, assignee_id, created_by, created_at, updated_at)
 -- priority: 'low' | 'medium' | 'high'
--- status: 'todo' | 'in_progress' | 'done'
+-- status:   'todo' | 'in_progress' | 'done'
+-- role:     'admin' | 'member'
 ```
 
 ---
 
-## Design Decisions
+## 🔒 Role-Based Access Control
 
-1. **LibSQL over SQLite3/better-sqlite3**: Native bindings (`sqlite3`, `better-sqlite3`) require build tools (`node-gyp`) not always available in CI/CD. `@libsql/client` is pure JS and works everywhere including Railway out of the box.
-
-2. **No frontend router library**: The app uses simple state-based routing (`view` string) to keep the bundle lean and avoid React Router configuration overhead for this scale.
-
-3. **JWT in localStorage**: Simple and effective for this use case. For higher security requirements, httpOnly cookies would be preferable.
-
-4. **Cascade deletes**: Project deletion cascades to members and tasks at the DB level — no orphaned rows.
-
-5. **Member-only task visibility**: A user cannot see tasks in projects they don't belong to — enforced at the API middleware layer.
-
----
-
-## Demo Credentials
-
-**Local dev:** After starting the backend once, a demo user is seeded automatically:
-
-- Email: `demo@taskflow.app`
-- Password: `demo123`
-
-**Smoke check (manual):** With frontend on `http://localhost:5173` and API on `http://localhost:3001`, sign in with the credentials above — you should land on the dashboard. Wrong password should show a red inline error under the fields and **keep** your typed email/password (no full-page reload).
-
-Create an account via `/signup`, then:
-- Create a project (you become Admin)
-- Add teammates by their registered email
-- Create and assign tasks
-- Team members can update status on their tasks
+| Action | Admin | Member |
+|---|---|---|
+| Create / delete project | ✅ | ❌ |
+| Add / remove members | ✅ | ❌ |
+| Create / delete tasks | ✅ | ❌ |
+| Edit any task field | ✅ | ❌ |
+| Update own task status | ✅ | ✅ |
+| View project & tasks | ✅ | ✅ |
 
 ---
 
-## Author
+## 👤 Author
 
-Built as a full-stack coding assignment demonstrating:
-- RESTful API design with Express
-- JWT authentication & authorization
-- Role-based access control
-- Relational data modeling
+**Harshit Soni** — [github.com/harshitsoni25](https://github.com/harshitsoni25)
+
+Built to demonstrate:
+- Full-stack REST API design with Express
+- JWT authentication & role-based authorization
+- Relational data modeling with SQLite/LibSQL
 - React state management without heavy frameworks
 - Production deployment on Railway
+- Enterprise-grade UI/UX with dark mode design system
