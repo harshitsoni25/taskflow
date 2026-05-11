@@ -6,10 +6,10 @@ A full-stack, production-ready team project & task management platform. Built wi
 
 ## 🌐 Live Demo
 
-| Service | URL |
-|---|---|
-| **Frontend** | [https://projecthub-frontend-pink.vercel.app](https://projecthub-frontend-pink.vercel.app) |
-| **Backend API** | Deployed on Railway |
+| Service | Platform | URL |
+|---|---|---|
+| **Frontend** | Vercel | [https://projecthub-frontend-pink.vercel.app](https://projecthub-frontend-pink.vercel.app) |
+| **Backend API** | Render | Auto-deployed from `render.yaml` |
 
 **Demo credentials**
 ```
@@ -254,45 +254,89 @@ CREATE TABLE tasks (
 
 ---
 
-## 🚀 Deploy to Railway (Backend)
+## 🚀 Deploy to Render (Backend)
 
-### Step 1 — Create a Railway Project
-1. Go to [railway.app](https://railway.app) → **New Project**
-2. Select **Deploy from GitHub repo** → choose `taskflow`
-3. Set the **root directory** to `backend`
+The backend is deployed on **[Render](https://render.com)** using the `render.yaml` blueprint at the repo root. Render auto-deploys on every push to `main`.
+
+### `render.yaml` (already in repo)
+```yaml
+services:
+  - type: web
+    name: projecthub-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm run start:prod
+    autoDeploy: true
+    envVars:
+      - key: JWT_SECRET
+        value: your-secret-here
+      - key: DATABASE_URL
+        value: file:./taskflow.db
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URLS
+        value: https://projecthub-frontend-pink.vercel.app
+```
+
+### Step 1 — Connect to Render
+1. Go to [render.com](https://render.com) → **New** → **Blueprint**
+2. Connect your GitHub repo `harshitsoni25/taskflow`
+3. Render will detect `render.yaml` automatically
 
 ### Step 2 — Set Environment Variables
-In Railway → your service → **Variables**, add:
+In Render → your service → **Environment**, set:
 
 | Variable | Value |
 |---|---|
-| `PORT` | `3001` |
 | `JWT_SECRET` | A long random secret string |
-| `DATABASE_URL` | `file:./taskflow.db` (local) or your Turso URL |
+| `DATABASE_URL` | `file:./taskflow.db` |
+| `NODE_ENV` | `production` |
 | `FRONTEND_URLS` | `https://projecthub-frontend-pink.vercel.app` |
 
-### Step 3 — Deploy Settings
-Railway will auto-detect `railway.toml`:
-```toml
-[build]
-builder = "nixpacks"
-
-[deploy]
-startCommand = "node seed.js && node server.js"
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 3
+### Step 3 — Start Command
+The `start:prod` script seeds demo data then starts the server:
+```bash
+node seed.js && node server.js
 ```
 
-### Step 4 — Get Your API URL
-After deploy, copy your Railway service URL (e.g. `https://taskflow-backend.up.railway.app`).
+### Step 4 — Keep-Alive (Free Tier)
+The server auto-pings `/api/health` every **14 minutes** to prevent Render's free tier from sleeping:
+```js
+// Built into server.js — no extra config needed
+if (process.env.RENDER_EXTERNAL_URL) {
+  setInterval(() => fetch(`${process.env.RENDER_EXTERNAL_URL}/api/health`), 14 * 60 * 1000);
+}
+```
 
-### Step 5 — Update Frontend
-In `frontend-app/src/api.js`, set the `baseURL` to your Railway URL:
+### Step 5 — Update Frontend API URL
+In `frontend-app/src/api.js`, point to your Render service URL:
 ```js
 const api = axios.create({
-  baseURL: 'https://your-service.up.railway.app/api',
+  baseURL: 'https://your-service.onrender.com/api',
 });
 ```
+
+---
+
+## 🌍 Deploy to Vercel (Frontend)
+
+The frontend is deployed on **[Vercel](https://vercel.com)** and auto-deploys on every push to `main`.
+
+### `vercel.json` (already in `frontend-app/`)
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+### Steps
+1. Go to [vercel.com](https://vercel.com) → **New Project** → Import `taskflow`
+2. Set **Root Directory** to `frontend-app`
+3. Framework: **Vite** (auto-detected)
+4. Deploy — done!
 
 ---
 
