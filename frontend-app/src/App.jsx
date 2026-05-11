@@ -35,6 +35,10 @@ function AppContent() {
   const [searchResults, setSearchResults] = useState([]);
   const [notifOpen, setNotifOpen]         = useState(false);
   const [createOpen, setCreateOpen]       = useState(false);
+  const [sidebarOpen, setSidebarOpen]     = useState(false);
+
+  // Helper: navigate and close sidebar on mobile
+  const navigate = (v) => { setView(v); setSidebarOpen(false); };
 
   useEffect(() => {
     if (user) {
@@ -137,12 +141,18 @@ function AppContent() {
 
   return (
     <div className="app-layout">
-      <Sidebar view={view} setView={setView} projects={projects} onNewProject={() => setView('projects')}/>
+      {/* Mobile sidebar backdrop */}
+      <div className={`sidebar-backdrop ${sidebarOpen ? 'backdrop-open' : ''}`} onClick={() => setSidebarOpen(false)} />
+
+      <Sidebar view={view} setView={navigate} projects={projects} onNewProject={() => navigate('projects')} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
       <div className="main-content" style={{display:'flex', flexDirection:'column'}}>
 
         {/* ── Top Navbar ─────────────────────────────────────────────────────── */}
-        <div style={{height: 60, borderBottom: '1px solid var(--border)', display:'flex', alignItems:'center', padding: '0 32px', background: 'var(--bg)', position:'relative', zIndex:50}}>
-          <div style={{display:'flex', gap: 24, fontSize: 13, fontWeight: 500, color: 'var(--text2)', flex: 1, overflowX: 'auto'}}>
+        <div className="top-navbar" style={{height: 60, borderBottom: '1px solid var(--border)', display:'flex', alignItems:'center', padding: '0 32px', background: 'var(--bg)', position:'relative', zIndex:50, gap: 12}}>
+          {/* Hamburger – mobile only */}
+          <button className="hamburger-btn" onClick={() => setSidebarOpen(o => !o)} aria-label="Toggle menu">☰</button>
+
+          <div className="top-navbar-links" style={{display:'flex', gap: 24, fontSize: 13, fontWeight: 500, color: 'var(--text2)', flex: 1, overflowX: 'auto'}}>
             {[
               { label: 'Dashboard',      key: 'dashboard'  },
               { label: 'Tasks',          key: 'my-tasks'   },
